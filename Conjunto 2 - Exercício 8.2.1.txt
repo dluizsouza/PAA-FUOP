@@ -1,0 +1,31 @@
+def mochila_dinamica(valores, pesos, capacidade):
+    n = len(valores)
+    
+    # Cria uma matriz (lista de listas) com dimensões (n+1) x (capacidade+1) inicializada com zeros.
+    matriz = [[0 for _ in range(capacidade+1)] for _ in range(n+1)]
+    
+    for i in range(1, n + 1):
+        
+        for j in range(1, capacidade + 1):
+            
+            if pesos[i-1] <= j:# Verifica se o peso do item atual é menor ou igual à capacidade atual.
+                matriz[i][j] = max(valores[i-1] + matriz[i-1][j - pesos[i-1]], matriz[i-1][j]) # Atualiza a célula da matriz com o valor máximo entre incluir o item atual ou não incluí-lo.
+            else:
+                matriz[i][j] = matriz[i-1][j]  Se o peso do item atual for maior que a capacidade atual, mantém o valor da célula acima (não inclui o item).
+               
+    
+    return matriz[n][capacidade]
+
+valores1 = [6, 10, 12]
+pesos1 = [4, 2, 1]
+capacidade1 = 5
+
+valores2 = [2.2, 3.5, 8]
+pesos2 = [1, 2, 3]
+capacidade2 = 5
+
+valores3 = [30, 8, 14]
+pesos3 = [6, 9, 12]
+capacidade3 = 5
+
+print (mochila_dinamica(valores1,pesos1,capacidade1))

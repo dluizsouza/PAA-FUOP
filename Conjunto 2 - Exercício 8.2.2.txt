@@ -1,0 +1,46 @@
+def mochila(capacidade, pesos, valores):
+    n = len(pesos)
+    
+    # Cria uma matriz (n+1) x (capacidade+1) inicializada com -1 para armazenar os valores máximos calculados.
+    F = [[-1 for _ in range(capacidade + 1)] for _ in range(n + 1)]
+    
+    # Inicializa a primeira coluna da matriz com 0, pois o valor máximo com capacidade 0 é sempre 0.
+    for i in range(n + 1):
+        F[i][0] = 0
+    # Inicializa a primeira linha da matriz com 0, pois o valor máximo com 0 itens é sempre 0.
+    for j in range(capacidade + 1):
+        F[0][j] = 0
+    
+    
+    return MFKnapsack(n, capacidade, pesos, valores, F)
+    
+
+def MFKnapsack(i, j, pesos, valores, F):
+    #se não há itens ou a capacidade é 0, o valor máximo é 0.
+    if i == 0 or j == 0:
+        return 0
+    
+    # Se o valor ainda não foi calculado para F[i][j], então deve-se calcular.
+    if F[i][j] < 0:
+        if j < pesos[i - 1]:# Se o peso do item i é maior que a capacidade j, não inclui o item i.
+            valor = MFKnapsack(i - 1, j, pesos, valores, F)
+        else:# Caso contrário, decide entre incluir ou não o item i, escolhendo o valor máximo.
+            valor = max(MFKnapsack(i - 1, j, pesos, valores, F), valores[i - 1] + MFKnapsack(i - 1, j - pesos[i - 1], pesos, valores, F))
+
+        F[i][j] = valor
+    
+    return F[i][j]
+
+valores1 = [6, 10, 12]
+pesos1 = [4, 2, 1]
+capacidade1 = 6
+
+valores2 = [2.2, 3.5, 8]
+pesos2 = [1, 2, 3]
+capacidade2 = 5
+
+valores3 = [30, 8, 14]
+pesos3 = [6, 9, 12]
+capacidade3 = 5
+
+print(mochila(capacidade1, pesos1, valores1))

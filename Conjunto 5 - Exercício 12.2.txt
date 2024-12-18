@@ -1,0 +1,50 @@
+def BranchAndBound(valores, pesos, i, v, w, W, mochila):
+    if w > W:
+        return 0, []
+    
+    if i >= len(valores):
+        return v, mochila
+    
+    # Calcula o bound superior
+    if i + 1 < len(valores):
+        ub = v + (W - w) * (valores[i + 1] / pesos[i + 1])
+    else:
+        ub = 0        
+
+    # Se o bound superior for menor que o valor máximo atual, não explora a recursão
+    if ub < v:
+        return v, mochila
+
+    # Inclui o item i
+    incluir_valor, incluir_mochila = BranchAndBound(valores, pesos, i + 1, v + valores[i], w + pesos[i], W, mochila + [i])
+    
+    # Exclui o item i
+    excluir_valor, excluir_mochila = BranchAndBound(valores, pesos, i + 1, v, w, W, mochila)
+    
+    if incluir_valor > excluir_valor:
+        return incluir_valor, incluir_mochila
+    else:
+        return excluir_valor, excluir_mochila
+
+valores1 = [40, 42, 25, 12]
+pesos1 = [4, 7, 5, 3]
+W1 = 10
+
+valores2 = [60, 80, 20, 90]
+pesos2 = [4, 3, 8, 2]
+W2 = 7
+
+valores3 = [120, 30, 25, 100]
+pesos3 = [8, 4, 10, 5]
+W3 = 15
+
+#ordenação dos itens pela relação valor/pesos
+itens = list(zip(valores1, pesos1))
+itens.sort(key=lambda x: x[0] / x[1], reverse=True)
+valores, pesos = zip(*itens)
+valores = list(valores)
+pesos = list(pesos)
+W = W1
+mochila = []
+print("Valores e pesos ordenados", valores, pesos)
+print("Valor máximo e itens da mochila:", BranchAndBound(valores, pesos, 0, 0, 0, W, []))

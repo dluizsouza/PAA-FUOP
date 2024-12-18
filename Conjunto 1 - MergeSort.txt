@@ -1,0 +1,39 @@
+def mergesort(A):
+    n = len(A)
+    m = n // 2
+    if n > 1:
+        B = A[:m]
+        C = A[m:]
+        mergesort(B)
+        mergesort(C)
+        merge(A, B, C)
+    return A
+
+def merge(A, B, C):
+    p = len(B)  # Tamanho da sublista B
+    q = len(C)  # Tamanho da sublista C
+    i = 0  # Índice para percorrer B
+    j = 0  # Índice para percorrer C
+    k = 0  # Índice para percorrer A
+    
+    # Combina os elementos de B e C em A em ordem crescente
+    while i < p and j < q:
+        if B[i] <= C[j]:
+            A[k] = B[i]
+            i += 1 
+        else:
+            A[k] = C[j]
+            j += 1
+        k += 1
+    
+    # Se todos os elementos de B foram inseridos, insere os restantes de C
+    if i == p:
+        A[k:k+q-j] = C[j:q]
+    else:  # Se todos os elementos de C foram inseridos, insere os restantes de B
+        A[k:k+p-i] = B[i:p]
+        
+A1 = [10,20,31,5]
+A2 = [1,2,31,5]
+A3 = [5,15,1,2]
+
+print(mergesort(A1))

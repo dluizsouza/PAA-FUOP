@@ -1,0 +1,31 @@
+def backtrack(A, d, i, caminho, s, resultado):
+    if s == d: # Se a soma atual 's' for igual ao valor alvo 'd', adiciona o caminho ao resultado e retorna
+        resultado.append(caminho)
+        return
+    elif i >= len(A):
+        return
+    elif s + A[i] > d:# Se a soma atual 's' mais o próximo elemento 'A[i]' exceder o valor alvo 'd', retorna.
+        return
+    soma = 0
+    for j in range(i, len(A)):
+        soma += s + A[j]
+    if soma < d:    # Se a soma dos elementos restantes for menor que 'd', retorna, pois não é possível atingir o valor alvo.
+        return    
+    else:
+        backtrack(A, d, i + 1, caminho + [A[i]], s + A[i], resultado)# Chama a função recursivamente incluindo o elemento 'A[i]' no caminho e atualizando a soma 's'.
+        backtrack(A, d, i + 1, caminho, s, resultado)# Chama a função recursivamente sem incluir o elemento 'A[i]' e continua com o próximo índice.
+    
+    return resultado
+
+
+A1 = [3, 5, 6, 7]
+d1 = 15
+
+A2 = [1, 2, 5, 6, 8]
+d2 = 9
+
+A3 = [4, 8, 14, 20, 22, 40]
+d3 = 48
+
+resultado = []
+print("Subconjuntos:", backtrack(A2, d2, 0, [], 0, resultado))
